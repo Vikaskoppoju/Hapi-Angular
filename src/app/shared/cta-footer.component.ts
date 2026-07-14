@@ -31,11 +31,11 @@ export class CtaComponent {}
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
   <footer class="bg-gradient-to-b from-brand-dark to-brand-dark-alt text-white/60">
     <div class="container-hapi py-8">
-      <div class="grid gap-8 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div class="flex flex-wrap items-start justify-between gap-8">
         <div>
           <div class="flex items-center gap-3">
             <img src="/logo.png" alt="Hikmah Academia logo" class="h-12 w-12 object-contain" />
@@ -45,28 +45,6 @@ export class CtaComponent {}
             </span>
           </div>
           <p class="mt-3 max-w-xs text-sm leading-relaxed">Publishing Insight. Cultivating Wisdom.</p>
-        </div>
-
-        <div>
-          <p class="font-heading text-xs font-bold uppercase tracking-[0.18em] text-white">Explore</p>
-          <ul class="mt-3 space-y-2 text-sm">
-            <li><a routerLink="/" class="transition-colors hover:text-white">Home</a></li>
-            <li><a routerLink="/journals" class="transition-colors hover:text-white">Journals</a></li>
-            <li><a routerLink="/books" class="transition-colors hover:text-white">Books</a></li>
-            <li><a routerLink="/services" class="transition-colors hover:text-white">Services</a></li>
-            <li><a routerLink="/contact" class="transition-colors hover:text-white">Contact Us</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="font-heading text-xs font-bold uppercase tracking-[0.18em] text-white">Locations</p>
-          <ul class="mt-3 space-y-2 text-sm">
-            <li>United Arab Emirates</li>
-            <li>Malaysia</li>
-            <li>United Kingdom</li>
-            <li>Saudi Arabia</li>
-            <li>India</li>
-          </ul>
         </div>
 
         <div>

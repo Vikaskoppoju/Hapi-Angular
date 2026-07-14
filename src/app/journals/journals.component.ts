@@ -15,8 +15,8 @@ import { JournalsDirectoryComponent } from './journals-directory.component';
       eyebrow="Peer-Reviewed Portfolio"
       title="Journals"
       description="At Hikmah Academia Publishing Institute, our academic journals provide a global platform for the dissemination of high-quality, peer-reviewed research across a wide range of disciplines."
-      image="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1400&q=80"
-      imageAlt="Grand library reading hall lined with books"
+      image="https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?auto=format&fit=crop&w=1400&q=80"
+      imageAlt="Open academic journal with research pages and citations"
       accent="blue"
       [chip]="{ value: '14', label: 'Active Journals' }"
       bandQuote="A global platform for the dissemination of high-quality, peer-reviewed research.">
