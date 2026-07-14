@@ -7,11 +7,11 @@ import { RevealDirective } from '../shared/reveal.directive';
 import { ContactFormComponent } from './contact-form.component';
 
 const locations = [
-  { name: 'United Arab Emirates', tint: 'bg-brand-surface-alt', accent: 'text-brand-primary' },
-  { name: 'Malaysia', tint: 'bg-brand-tint-teal', accent: 'text-accent-teal' },
-  { name: 'Saudi Arabia', tint: 'bg-brand-tint-amber', accent: 'text-accent-amber' },
-  { name: 'United Kingdom', tint: 'bg-brand-tint-blue', accent: 'text-accent-blue' },
-  { name: 'India', tint: 'bg-brand-tint-rose', accent: 'text-accent-rose' },
+  { name: 'United Arab Emirates', flag: '🇦🇪', tint: 'bg-brand-surface-alt', accent: 'text-brand-primary' },
+  { name: 'Malaysia', flag: '🇲🇾', tint: 'bg-brand-tint-teal', accent: 'text-accent-teal' },
+  { name: 'Saudi Arabia', flag: '🇸🇦', tint: 'bg-brand-tint-amber', accent: 'text-accent-amber' },
+  { name: 'United Kingdom', flag: '🇬🇧', tint: 'bg-brand-tint-blue', accent: 'text-accent-blue' },
+  { name: 'India', flag: '🇮🇳', tint: 'bg-brand-tint-rose', accent: 'text-accent-rose' },
 ];
 
 @Component({
@@ -40,7 +40,10 @@ const locations = [
         <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
           <div *ngFor="let loc of locations; let i = index" appReveal [delay]="i * 90" variant="scale">
             <div [class]="'card-lift flex h-full min-h-[120px] flex-col justify-between rounded-2xl p-5 ' + loc.tint">
-              <span [class]="'text-[10px] font-bold uppercase tracking-[0.18em] ' + loc.accent">{{ pad(i + 1) }}</span>
+              <div class="flex items-center justify-between">
+                <span [class]="'text-[10px] font-bold uppercase tracking-[0.18em] ' + loc.accent">{{ pad(i + 1) }}</span>
+                <span class="text-2xl leading-none" role="img" [attr.aria-label]="loc.name + ' flag'">{{ loc.flag }}</span>
+              </div>
               <p class="font-serif text-lg leading-tight tracking-tight text-brand-ink">{{ loc.name }}</p>
             </div>
           </div>
