@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CONTACT, POLICIES } from '../data/site-data';
+import { SocialLinksComponent } from './social-links.component';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SocialLinksComponent],
   template: `
   <footer class="mt-auto border-t-4 border-brown bg-paper-2 text-[0.9rem] text-ink-soft">
     <div class="wrap grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
@@ -49,10 +50,7 @@ import { CONTACT, POLICIES } from '../data/site-data';
     <div class="border-t border-rule">
       <div class="wrap flex flex-col gap-2 py-5 text-[0.8rem] text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>&copy; {{ year }} Hikmah Academia Publishing Institute Pvt. Ltd. All rights reserved.</p>
-        <p class="flex gap-5">
-          <a [href]="contact.linkedin" class="hover:text-ink">LinkedIn</a>
-          <a [href]="contact.youtube" class="hover:text-ink">YouTube</a>
-        </p>
+        <app-social-links [size]="17" gapClass="gap-4" class="text-ink-soft"></app-social-links>
       </div>
     </div>
   </footer>

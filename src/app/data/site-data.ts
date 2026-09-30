@@ -171,6 +171,14 @@ export const CONTACT = {
   presence: ['United Arab Emirates', 'Malaysia', 'Saudi Arabia', 'United Kingdom', 'India'],
   linkedin: 'https://www.linkedin.com/in/hikmah-academia-publishing-institute-hapi-61a27b3b2',
   youtube: 'https://www.youtube.com/@Hapi-12-u1b',
+  // Profiles linked from hapiacademia.com
+  socials: [
+    { label: 'X', href: 'https://x.com/AcademiaHi92441', icon: 'x' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/hikmah-academia-publishing-institute-hapi-61a27b3b2', icon: 'linkedin' },
+    { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61588523176935', icon: 'facebook' },
+    { label: 'Instagram', href: 'https://www.instagram.com/hapi.2026/', icon: 'instagram' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@Hapi-12-u1b', icon: 'youtube' },
+  ],
 };
 
 export const POLICIES = [

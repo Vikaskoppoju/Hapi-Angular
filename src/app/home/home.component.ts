@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
+import { JournalSpotlightComponent } from './journal-spotlight.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, JournalSpotlightComponent],
   template: `
   <!-- Intro + latest articles -->
   <section class="border-b border-rule">
@@ -54,8 +55,10 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
           <a routerLink="/journals" class="text-[0.8rem] text-muted hover:text-ink hover:underline">All journals</a>
         </div>
         <ol>
-          <li *ngFor="let a of articles" class="flex gap-5 border-b border-rule py-5 last:border-b-0">
-            <img [src]="a.cover" [alt]="a.journal + ' issue cover'" class="cover w-16 shrink-0 self-start" />
+          <li *ngFor="let a of articles" class="flex gap-5 border-b border-rule py-6 last:border-b-0">
+            <a [href]="a.url" class="shrink-0 self-start" [attr.aria-label]="a.title">
+              <img [src]="a.cover" [alt]="a.journal + ' issue cover'" class="cover w-20 transition-transform duration-200 hover:-translate-y-0.5 sm:w-24" />
+            </a>
             <div class="min-w-0 flex-1">
               <p class="text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-navy">{{ a.journal }}</p>
               <h3 class="mt-1 font-serif text-[1.08rem] leading-snug text-ink">
@@ -64,7 +67,7 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
               <p class="mt-1 truncate text-[0.8rem] text-ink-soft" [title]="a.authors.join(', ')">{{ a.authors.join(', ') }}</p>
               <div class="mt-3 flex items-center justify-between gap-3">
                 <span class="flex min-w-0 items-center gap-2.5">
-                  <img [src]="a.editor.photo" [alt]="a.editor.name" class="h-8 w-8 shrink-0 rounded-full object-cover object-top ring-1 ring-rule" />
+                  <img [src]="a.editor.photo" [alt]="a.editor.name" class="h-10 w-10 shrink-0 rounded-full object-cover object-top ring-1 ring-rule" />
                   <span class="min-w-0 text-[0.775rem] leading-tight">
                     <span class="block text-muted">Editor-in-Chief</span>
                     <span class="block truncate font-serif text-[0.85rem] text-ink">{{ a.editor.name }}</span>
@@ -82,30 +85,8 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
     </div>
   </section>
 
-  <!-- Journal shelf -->
-  <section class="border-b border-rule bg-paper-2/50">
-    <div class="wrap py-14 md:py-16">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 class="font-serif text-3xl font-medium tracking-tight md:text-4xl">Our journals</h2>
-          <p class="mt-3 max-w-2xl font-serif text-lg text-ink-soft">
-            Fourteen peer-reviewed titles. All are open access, and every one of them encourages work that crosses disciplines.
-          </p>
-        </div>
-        <a routerLink="/journals" class="btn btn-ghost">Journal directory</a>
-      </div>
-
-      <ul class="mt-10 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-4 lg:grid-cols-7">
-        <li *ngFor="let j of journals">
-          <a routerLink="/journals" [queryParams]="{ q: j.abbr }" class="group block">
-            <img [src]="j.cover" [alt]="j.title + ' cover'" class="cover w-full transition-transform duration-200 group-hover:-translate-y-1" loading="lazy" />
-            <p class="mt-3 text-[0.7rem] font-semibold tracking-[0.1em] text-muted">{{ j.abbr }}</p>
-            <p class="mt-0.5 font-serif text-[0.95rem] leading-snug text-ink group-hover:underline">{{ j.title }}</p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </section>
+  <!-- Journals: spotlight + cover strip -->
+  <app-journal-spotlight></app-journal-spotlight>
 
   <!-- Editors-in-Chief -->
   <section class="border-b border-rule">
@@ -120,14 +101,12 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
       </div>
 
       <ul class="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-        <li *ngFor="let e of editors">
-          <img [src]="e.photo" [alt]="e.name" class="aspect-[4/5] w-full object-cover object-top" loading="lazy" />
-          <p class="mt-3 font-serif text-[1.05rem] leading-snug text-ink">{{ e.name }}</p>
-          <p class="mt-1 text-[0.8rem] leading-snug text-muted">{{ e.affiliation }}</p>
-          <p class="mt-2 flex flex-wrap gap-1.5">
-            <a *ngFor="let abbr of e.journals" routerLink="/journals" [queryParams]="{ q: abbr }"
-              class="border border-rule px-1.5 py-0.5 text-[0.7rem] font-semibold tracking-[0.08em] text-navy hover:border-navy">{{ abbr }}</a>
-          </p>
+        <li *ngFor="let e of editors" class="flex flex-col items-center text-center">
+          <img [src]="e.photo" [alt]="e.name" loading="lazy"
+            class="aspect-square w-32 rounded-full object-cover object-top ring-1 ring-rule ring-offset-4 ring-offset-paper sm:w-36" />
+          <p class="mt-4 font-serif text-[1.05rem] leading-snug text-ink">{{ e.name }}</p>
+          <p class="mt-1 max-w-[15rem] text-[0.8rem] leading-snug text-muted">{{ e.affiliation }}</p>
+          
         </li>
       </ul>
     </div>
@@ -154,23 +133,48 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
         </div>
       </div>
 
-      <div class="lg:col-span-5">
-        <p class="label mb-2">What authors can expect</p>
-        <ol class="border-t border-ink">
-          <li *ngFor="let c of commitments; let i = index" class="flex gap-4 border-b border-rule py-3.5">
-            <span class="w-5 shrink-0 font-serif text-accent">{{ i + 1 }}</span>
-            <span class="font-serif text-[1.05rem] text-ink">{{ c }}</span>
-          </li>
-        </ol>
+      <figure class="self-end lg:col-span-5 lg:pl-6">
+        <blockquote class="border-l-2 border-accent pl-6 font-serif text-[1.35rem] italic leading-snug text-brown md:text-2xl">
+          &ldquo;Guided by the principle of <em class="not-italic">hikmah</em>, wisdom, we aim to foster meaningful
+          scholarship that contributes to intellectual progress and societal development.&rdquo;
+        </blockquote>
+        <figcaption class="mt-4 pl-6 text-[0.85rem] text-muted">About HAPI</figcaption>
+      </figure>
+    </div>
+
+    <div class="wrap pb-14 md:pb-16">
+      <div class="flex items-baseline justify-between border-b-2 border-ink pb-2">
+        <h3 class="font-serif text-xl font-semibold">What authors can expect</h3>
+        <a routerLink="/journals" class="text-[0.85rem] text-muted hover:text-ink hover:underline">Find a journal</a>
       </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-3">
+        <li *ngFor="let c of commitments; let i = index"
+          class="flex gap-4 border-b border-rule py-7 sm:pr-8 lg:[&:nth-child(3n+2)]:border-x lg:[&:nth-child(3n+2)]:px-8 lg:[&:nth-child(3n)]:pl-8">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-navy" aria-hidden="true">
+            <path [attr.d]="c.icon" />
+          </svg>
+          <div>
+            <h4 class="font-serif text-[1.15rem] font-semibold text-ink">{{ c.title }}</h4>
+            <p class="mt-1.5 leading-relaxed text-ink-soft">{{ c.text }}</p>
+          </div>
+        </li>
+      </ul>
     </div>
 
     <div class="wrap pb-14 md:pb-20">
-      <div class="grid border-y border-ink md:grid-cols-3 md:divide-x md:divide-rule">
-        <div *ngFor="let m of mvv" class="py-7 md:px-8 md:first:pl-0 md:last:pr-0">
-          <h3 class="font-serif text-xl font-semibold text-brown">{{ m.title }}</h3>
-          <p class="mt-3 font-serif leading-relaxed text-ink-soft">{{ m.text }}</p>
-        </div>
+      <div class="bg-paper-2 px-6 py-8 md:px-12 md:py-12">
+        <p class="label">Our purpose</p>
+        <dl class="mt-6">
+          <div *ngFor="let m of mvv; let i = index"
+            class="grid gap-3 border-t border-ink/15 py-7 first:border-ink md:grid-cols-[13rem_minmax(0,1fr)] md:gap-10 md:py-9">
+            <dt class="flex items-baseline gap-3 md:block">
+              <span class="font-serif text-sm text-accent tabular-nums">0{{ i + 1 }}</span>
+              <span class="font-serif text-[1.9rem] font-medium leading-none tracking-tight text-brown md:mt-2 md:block md:text-[2.3rem]">{{ m.title }}</span>
+            </dt>
+            <dd class="max-w-[46rem] font-serif text-[1.2rem] leading-[1.55] text-ink md:text-[1.4rem]">{{ m.text }}</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </section>
@@ -227,12 +231,38 @@ export class HomeComponent {
   subjects = SUBJECTS;
   q = '';
 
+  // Icon paths are simple 24px line drawings (stroke only).
   commitments = [
-    'Multidisciplinary and specialised academic journals',
-    'A rigorous and transparent peer-review process',
-    'Ethical publishing aligned with international standards',
-    'Global reach and digital accessibility',
-    'Dedicated editorial and author support',
+    {
+      title: 'Specialised journals',
+      text: 'Fourteen multidisciplinary and specialised titles across five subject areas.',
+      icon: 'M4 5.5A1.5 1.5 0 015.5 4H10v16H5.5A1.5 1.5 0 014 18.5v-13zM10 4h4v16h-4M14 5l4.2-1 2.8 15.4-4.2.8L14 5',
+    },
+    {
+      title: 'Transparent peer review',
+      text: 'Every submission goes through a rigorous and transparent peer-review process.',
+      icon: 'M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12zM12 15a3 3 0 100-6 3 3 0 000 6z',
+    },
+    {
+      title: 'Ethical publishing',
+      text: 'Practice aligned with international standards, respecting authorship and originality.',
+      icon: 'M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6L12 3zM8.8 12.2l2.2 2.2 4.4-4.6',
+    },
+    {
+      title: 'Open access',
+      text: 'Published articles are freely available online, for global reach and digital accessibility.',
+      icon: 'M12 21a9 9 0 100-18 9 9 0 000 18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z',
+    },
+    {
+      title: 'Citable DOIs',
+      text: 'Each published article is registered with a Crossref DOI so it can be cited and found.',
+      icon: 'M9.5 14.5l5-5M10.5 6.5l1.8-1.8a4 4 0 015.7 5.7l-1.8 1.8M13.5 17.5l-1.8 1.8a4 4 0 01-5.7-5.7l1.8-1.8',
+    },
+    {
+      title: 'Author support',
+      text: 'Dedicated editorial and author support from submission through to publication.',
+      icon: 'M4 5h16v11H9l-5 4V5zM8 9.5h8M8 12.5h5',
+    },
   ];
 
   mvv = [

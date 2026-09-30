@@ -2,18 +2,21 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CONTACT } from '../data/site-data';
+import { SocialLinksComponent } from './social-links.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, SocialLinksComponent],
   template: `
   <header class="border-b border-rule bg-paper">
     <div class="border-b border-rule bg-paper-2/60">
       <div class="wrap flex h-9 items-center justify-between text-[12.5px] text-muted">
         <span class="hidden sm:inline">Peer-reviewed &middot; Open access &middot; Independent</span>
-        <div class="flex items-center gap-5">
-          <a [href]="'mailto:' + contact.emails.general" class="hover:text-ink">{{ contact.emails.general }}</a>
+        <div class="flex w-full items-center justify-between gap-5 sm:w-auto sm:justify-end">
+          <app-social-links [size]="14" gapClass="gap-3.5" class="text-ink-soft"></app-social-links>
+          <span class="hidden h-3.5 w-px bg-rule sm:block"></span>
+          <a [href]="'mailto:' + contact.emails.general" class="hidden hover:text-ink md:inline">{{ contact.emails.general }}</a>
           <a href="https://hapiacademia.com/wp-login.php" class="hover:text-ink">Log in</a>
         </div>
       </div>

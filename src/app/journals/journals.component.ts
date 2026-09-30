@@ -60,8 +60,8 @@ import { JOURNALS, SUBJECTS, CONTACT, Journal } from '../data/site-data';
           <div *ngIf="j.editors.length; else launching" class="mt-4">
             <p class="label">{{ j.editors.length > 1 ? 'Editors-in-Chief' : 'Editor-in-Chief' }}</p>
             <ul class="mt-2.5 grid max-w-2xl gap-4" [ngClass]="{ 'xl:max-w-none xl:grid-cols-2': j.editors.length > 1 }">
-              <li *ngFor="let e of j.editors" class="flex items-start gap-3.5">
-                <img [src]="e.photo" [alt]="e.name" class="h-16 w-[3.2rem] shrink-0 object-cover object-top ring-1 ring-rule" loading="lazy" />
+              <li *ngFor="let e of j.editors" class="flex items-center gap-3.5">
+                <img [src]="e.photo" [alt]="e.name" class="h-14 w-14 shrink-0 rounded-full object-cover object-top ring-1 ring-rule" loading="lazy" />
                 <span class="text-[0.9rem]">
                   <span class="block font-serif text-[1.05rem] text-ink">{{ e.name }}</span>
                   <span class="mt-0.5 block leading-snug text-ink-soft">{{ e.affiliation }}</span>
