@@ -11,7 +11,7 @@ import { ARTICLES, EDITORS, JOURNALS, SUBJECTS } from '../data/site-data';
   template: `
   <!-- Intro + latest articles -->
   <section class="border-b border-rule">
-    <div class="wrap grid grid-col-1 gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-14">
+    <div class="wrap grid grid-cols-1 gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-14">
       <div class="flex flex-col">
         <p class="label">Your trusted publication partner</p>
         <h1 class="mt-5 font-serif text-[2.6rem] font-medium leading-[1.08] tracking-tight text-ink md:text-6xl">
