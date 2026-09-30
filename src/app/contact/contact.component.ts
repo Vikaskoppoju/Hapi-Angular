@@ -1,95 +1,55 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../shared/navbar.component';
-import { PageHeroComponent } from '../shared/page-hero.component';
-import { FooterComponent } from '../shared/cta-footer.component';
-import { RevealDirective } from '../shared/reveal.directive';
+import { PageHeaderComponent } from '../shared/page-header.component';
 import { ContactFormComponent } from './contact-form.component';
-
-const locations = [
-  { name: 'United Arab Emirates', code: 'ae', tint: 'bg-brand-surface-alt', accent: 'text-brand-primary' },
-  { name: 'Malaysia', code: 'my', tint: 'bg-brand-tint-teal', accent: 'text-accent-teal' },
-  { name: 'Saudi Arabia', code: 'sa', tint: 'bg-brand-tint-amber', accent: 'text-accent-amber' },
-  { name: 'United Kingdom', code: 'gb', tint: 'bg-brand-tint-blue', accent: 'text-accent-blue' },
-  { name: 'India', code: 'in', tint: 'bg-brand-tint-rose', accent: 'text-accent-rose' },
-];
+import { CONTACT } from '../data/site-data';
 
 @Component({
   selector: 'app-contact-page',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, PageHeroComponent, FooterComponent, RevealDirective, ContactFormComponent],
+  imports: [CommonModule, PageHeaderComponent, ContactFormComponent],
   template: `
-  <app-navbar></app-navbar>
-  <main class="flex-1">
-    <app-page-hero
-      eyebrow="Get in Touch"
-      title="Contact Us"
-      description="Hikmah Academia Publishing Institute is committed to supporting authors, researchers, and institutions throughout their publishing journey. Our team will respond promptly with guidance tailored to your needs."
-      image="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1400&q=80"
-      imageAlt="Writing desk with letters, envelopes, and a fountain pen"
-      accent="rose"
-      [chip]="{ value: '5', label: 'Global Offices' }"
-      bandQuote="Supporting authors, researchers, and institutions throughout their publishing journey.">
-    </app-page-hero>
+  <app-page-header
+    title="Contact"
+    lede="Questions about a journal submission, a book, our editorial services, a conference or an academic collaboration? Get in touch and our team will reply with guidance for your situation.">
+  </app-page-header>
 
-    <section class="border-y border-brand-line bg-white py-14">
-      <div class="container-hapi">
-        <div appReveal>
-          <p class="mb-8 text-center text-xs font-bold uppercase tracking-[0.22em] text-brand-muted">A Presence Across Five Countries</p>
+  <div class="wrap grid gap-12 py-12 md:py-16 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-5">
+      <h2 class="border-b-2 border-ink pb-2 font-serif text-xl font-semibold">Who to write to</h2>
+      <dl>
+        <div *ngFor="let d of desks" class="border-b border-rule py-4">
+          <dt class="text-[0.9rem] text-muted">{{ d.label }}</dt>
+          <dd class="mt-1"><a [href]="'mailto:' + d.email" class="link break-all font-serif text-lg">{{ d.email }}</a></dd>
         </div>
-        <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
-          <div *ngFor="let loc of locations; let i = index" appReveal [delay]="i * 90" variant="scale">
-            <div [class]="'card-lift flex h-full min-h-[120px] flex-col justify-between rounded-2xl p-5 ' + loc.tint">
-              <div class="flex items-center justify-between">
-                <span [class]="'text-[10px] font-bold uppercase tracking-[0.18em] ' + loc.accent">{{ pad(i + 1) }}</span>
-                <img [src]="'https://flagcdn.com/w40/' + loc.code + '.png'" [alt]="loc.name + ' flag'" class="h-6 w-9 rounded object-cover shadow-sm" />
-              </div>
-              <p class="font-serif text-lg leading-tight tracking-tight text-brand-ink">{{ loc.name }}</p>
-            </div>
-          </div>
+        <div class="border-b border-rule py-4">
+          <dt class="text-[0.9rem] text-muted">Telephone</dt>
+          <dd class="mt-1"><a [href]="c.phoneHref" class="font-serif text-lg text-ink hover:underline">{{ c.phone }}</a></dd>
         </div>
-      </div>
-    </section>
+      </dl>
 
-    <section class="relative overflow-hidden bg-brand-surface py-24 md:py-28">
-      <div class="animate-mesh pointer-events-none absolute -left-40 top-20 h-[400px] w-[400px] rounded-full bg-brand-tint-rose blur-3xl"></div>
+      <h2 class="mt-12 border-b-2 border-ink pb-2 font-serif text-xl font-semibold">Registered office</h2>
+      <address class="py-4 font-serif text-lg not-italic leading-relaxed text-ink-soft">
+        Hikmah Academia Publishing Institute Pvt. Ltd.<br />
+        <span *ngFor="let line of c.address" class="block">{{ line }}</span>
+      </address>
 
-      <div class="container-hapi relative grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start">
-        <div class="space-y-5">
-          <div appReveal variant="left">
-            <div class="card-lift rounded-3xl border border-brand-line/70 bg-white p-7">
-              <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint-rose text-accent-rose">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-              </div>
-              <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-brand-muted">Email</p>
-              <a href="mailto:info@hapiacademia.com" class="mt-1.5 block font-heading text-lg font-bold text-brand-primary transition-colors hover:text-brand-primary-dark">info&#64;hapiacademia.com</a>
-            </div>
-          </div>
+      <p class="label mt-6">Presence in</p>
+      <p class="mt-2 font-serif text-lg text-ink-soft">{{ c.presence.join(' · ') }}</p>
+    </div>
 
-          <div appReveal [delay]="120" variant="left">
-            <div class="card-lift rounded-3xl border border-brand-line/70 bg-white p-7">
-              <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint-rose text-accent-rose">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 10h8M8 14h5M21 12a9 9 0 11-4.4-7.7L21 3l-1.3 4.4A8.96 8.96 0 0121 12z" stroke-linecap="round" stroke-linejoin="round" /></svg>
-              </div>
-              <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-brand-muted">Inquiries</p>
-              <p class="mt-2 text-sm leading-relaxed text-brand-body">Journal submissions, book publishing, editorial services, conferences, and academic collaborations.</p>
-            </div>
-          </div>
-        </div>
-
-        <div appReveal [delay]="200" variant="right">
-          <app-contact-form></app-contact-form>
-        </div>
-      </div>
-    </section>
-  </main>
-  <app-footer></app-footer>
+    <div class="lg:col-span-7">
+      <app-contact-form></app-contact-form>
+    </div>
+  </div>
   `,
 })
 export class ContactPageComponent {
-  locations = locations;
-
-  pad(n: number) {
-    return String(n).padStart(2, '0');
-  }
+  c = CONTACT;
+  desks = [
+    { label: 'General enquiries & journal submissions', email: CONTACT.emails.general },
+    { label: 'Book proposals', email: CONTACT.emails.books },
+    { label: 'Author services', email: CONTACT.emails.services },
+    { label: 'Technical support', email: CONTACT.emails.support },
+  ];
 }
